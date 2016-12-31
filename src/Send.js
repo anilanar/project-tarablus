@@ -17,13 +17,15 @@ export default class Send extends React.Component {
     if (this.props.text.trim().length > 0) {
       return (
         <TouchableOpacity
-          style={[styles.container, this.props.containerStyle]}
+          style={styles.container}
           onPress={() => {
             this.props.onSend({text: this.props.text.trim()}, true);
           }}
           accessibilityTraits="button"
         >
-          <Text style={[styles.text, this.props.textStyle]}>{this.props.label}</Text>
+        <Text style={styles.text}>
+            {this.props.label}
+        </Text>
         </TouchableOpacity>
       );
     }
@@ -51,14 +53,10 @@ Send.defaultProps = {
   text: '',
   onSend: () => {},
   label: 'Send',
-  containerStyle: {},
-  textStyle: {},
 };
 
 Send.propTypes = {
   text: React.PropTypes.string,
   onSend: React.PropTypes.func,
   label: React.PropTypes.string,
-  containerStyle: View.propTypes.style,
-  textStyle: Text.propTypes.style,
 };

@@ -8,49 +8,52 @@ import {
   View,
 } from 'react-native';
 
-export default class LoadEarlier extends React.Component {
-  renderLoading() {
-    if (this.props.isLoadingEarlier === false) {
-      return (
-        <Text style={[styles.text, this.props.textStyle]}>
-          {this.props.label}
-        </Text>
-      );
+const LoadEarlier = props => {
+    return (
+        <TouchableOpacity
+            style={styles.container}
+            onPress={() => {
+                if (props.onLoadEarlier) {
+                    props.onLoadEarlier();
+                }
+            }}
+            disabled={props.isLoadingEarlier === true}
+            accessibilityTraits="button"
+        >
+            <View style={styles.wrapper}>
+                {renderLoading(props)}
+            </View>
+        </TouchableOpacity>
+    );
+};
+
+const renderLoading = props => {
+    if (props.isLoadingEarlier === true) {
+        return (
+            <View>
+                <Text style={[
+                    styles.text,
+                    {
+                        opacity: 0,
+                    }
+                ]}>
+                    {props.label}
+                </Text>
+                <ActivityIndicator
+                    color='white'
+                    size='small'
+                    style={styles.activityIndicator}
+                />
+            </View>
+        );
     }
+
     return (
-      <View>
-        <Text style={[styles.text, this.props.textStyle, {
-            opacity: 0,
-          }]}>
-          {this.props.label}
+        <Text style={styles.text}>
+            {props.label}
         </Text>
-        <ActivityIndicator
-          color='white'
-          size='small'
-          style={[styles.activityIndicator, this.props.activityIndicatorStyle]}
-        />
-      </View>
     );
-  }
-  render() {
-    return (
-      <TouchableOpacity
-        style={[styles.container, this.props.containerStyle]}
-        onPress={() => {
-          if (this.props.onLoadEarlier) {
-            this.props.onLoadEarlier();
-          }
-        }}
-        disabled={this.props.isLoadingEarlier === true}
-        accessibilityTraits="button"
-      >
-        <View style={[styles.wrapper, this.props.wrapperStyle]}>
-          {this.renderLoading()}
-        </View>
-      </TouchableOpacity>
-    );
-  }
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -84,18 +87,12 @@ LoadEarlier.defaultProps = {
   onLoadEarlier: () => {},
   isLoadingEarlier: false,
   label: 'Load earlier messages',
-  containerStyle: {},
-  wrapperStyle: {},
-  textStyle: {},
-  activityIndicatorStyle: {},
 };
 
 LoadEarlier.propTypes = {
   onLoadEarlier: React.PropTypes.func,
   isLoadingEarlier: React.PropTypes.bool,
   label: React.PropTypes.string,
-  containerStyle: View.propTypes.style,
-  wrapperStyle: View.propTypes.style,
-  textStyle: Text.propTypes.style,
-  activityIndicatorStyle: View.propTypes.style,
 };
+
+export default LoadEarlier;

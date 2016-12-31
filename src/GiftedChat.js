@@ -13,7 +13,6 @@ import moment from 'moment/min/moment-with-locales.min';
 
 import * as utils from './utils';
 import Actions from './Actions';
-import Avatar from './Avatar';
 import Bubble from './Bubble';
 import MessageImage from './MessageImage';
 import MessageText from './MessageText';
@@ -96,7 +95,7 @@ class GiftedChat extends React.Component {
   getChildContext() {
     return {
       actionSheet: () => this._actionSheetRef,
-      getLocale: this.getLocale,
+        getLocale: () => this.getLocale(),
     };
   }
 
@@ -193,9 +192,6 @@ class GiftedChat extends React.Component {
   // TODO
   // setMinInputToolbarHeight
   getMinInputToolbarHeight() {
-    if (this.props.renderAccessory) {
-      return MIN_INPUT_TOOLBAR_HEIGHT * 2;
-    }
     return MIN_INPUT_TOOLBAR_HEIGHT;
   }
 
@@ -296,7 +292,6 @@ class GiftedChat extends React.Component {
 
           ref={component => this._messageContainerRef = component}
         />
-        {this.renderChatFooter()}
       </AnimatedView>
     );
   }
@@ -378,31 +373,11 @@ class GiftedChat extends React.Component {
       onSend: this.onSend,
     };
 
-    if (this.props.renderInputToolbar) {
-      return this.props.renderInputToolbar(inputToolbarProps);
-    }
     return (
       <InputToolbar
         {...inputToolbarProps}
       />
     );
-  }
-
-  renderChatFooter() {
-    if (this.props.renderChatFooter) {
-      const footerProps = {
-        ...this.props,
-      };
-      return this.props.renderChatFooter(footerProps);
-    }
-    return null;
-  }
-
-  renderLoading() {
-    if (this.props.renderLoading) {
-      return this.props.renderLoading();
-    }
-    return null;
   }
 
   render() {
@@ -449,7 +424,6 @@ class GiftedChat extends React.Component {
           });
         }}
       >
-        {this.renderLoading()}
       </View>
     );
   }
@@ -470,7 +444,7 @@ GiftedChat.defaultProps = {
   messages: [],
   onSend: () => {
   },
-  loadEarlier: false,
+  loadEarlier: true,
   onLoadEarlier: () => {
   },
   locale: null,
@@ -478,23 +452,6 @@ GiftedChat.defaultProps = {
     ios: true,
     android: false,
   }),
-  renderAccessory: null,
-  renderActions: null,
-  renderAvatar: null,
-  renderBubble: null,
-  renderFooter: null,
-  renderChatFooter: null,
-  renderMessageText: null,
-  renderMessageImage: null,
-  renderComposer: null,
-  renderCustomView: null,
-  renderDay: null,
-  renderInputToolbar: null,
-  renderLoadEarlier: null,
-  renderLoading: null,
-  renderMessage: null,
-  renderSend: null,
-  renderTime: null,
   user: {},
   bottomOffset: 0,
   isLoadingEarlier: false,
@@ -507,23 +464,6 @@ GiftedChat.propTypes = {
   onLoadEarlier: React.PropTypes.func,
   locale: React.PropTypes.string,
   isAnimated: React.PropTypes.bool,
-  renderAccessory: React.PropTypes.func,
-  renderActions: React.PropTypes.func,
-  renderAvatar: React.PropTypes.func,
-  renderBubble: React.PropTypes.func,
-  renderFooter: React.PropTypes.func,
-  renderChatFooter: React.PropTypes.func,
-  renderMessageText: React.PropTypes.func,
-  renderMessageImage: React.PropTypes.func,
-  renderComposer: React.PropTypes.func,
-  renderCustomView: React.PropTypes.func,
-  renderDay: React.PropTypes.func,
-  renderInputToolbar: React.PropTypes.func,
-  renderLoadEarlier: React.PropTypes.func,
-  renderLoading: React.PropTypes.func,
-  renderMessage: React.PropTypes.func,
-  renderSend: React.PropTypes.func,
-  renderTime: React.PropTypes.func,
   user: React.PropTypes.object,
   bottomOffset: React.PropTypes.number,
   isLoadingEarlier: React.PropTypes.bool,
@@ -532,7 +472,6 @@ GiftedChat.propTypes = {
 export {
   GiftedChat,
   Actions,
-  Avatar,
   Bubble,
   MessageImage,
   MessageText,
